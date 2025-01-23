@@ -43,7 +43,15 @@
 */
 uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
 {
-  return 0;
+  uint64_t res = 0;
+  for (int i = 0; i < LONGSIZE; i++)
+  {
+    uint64_t shift = (uint64_t)bytes[i] << (i * 8); // shift by amount of bits
+    // shift left because it's a 64-bit int and need byte[0] is least significant 
+    res = 0 | shift;  // is result is 0 it stays same, if not it remains unchanged
+  }
+  return res;
+  //return 0;
 }
 
 /** 
@@ -67,7 +75,13 @@ uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
 */
 uint64_t Tools::getByte(uint64_t source, int32_t byteNum)
 {
-  return 0;
+  if (byteNum > 7 || byteNum < 0)
+  {
+    return 0;
+  }
+  return (source >> (byteNum * 8)) & 0xFF;
+  // byte contains 8 bits, shift by number of bits in the byte
+  // isolate the last two bits (0xFF)
 }
 
 /**
