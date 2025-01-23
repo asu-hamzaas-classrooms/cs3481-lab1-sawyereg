@@ -48,7 +48,7 @@ uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
   {
     uint64_t shift = (uint64_t)bytes[i] << (i * 8); // shift by amount of bits
     // shift left because it's a 64-bit int and need byte[0] is least significant 
-    res = 0 | shift;  // is result is 0 it stays same, if not it remains unchanged
+    res = res | shift;  // is result is 0 it stays same, if not it remains unchanged
   }
   return res;
   //return 0;
@@ -67,7 +67,8 @@ uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
  * @param int32_t byteNum that indicates the byte to return (0 through 7)
  *                byte 0 is the low order byte
  * @return 0 if byteNum is out of range
- *         byte 0, 1, .., or 7 of source if byteNum is within range
+ *         byte 0, 1, .., or 7 of source if byteN:wq
+ um is within range
  *
  * RULES:
  * 1) you can use an if to handle error checking on input
@@ -111,7 +112,23 @@ uint64_t Tools::getByte(uint64_t source, int32_t byteNum)
  */
 uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
 {
-  return 0;
+  if ((low < 0) || (high > 63) || (low > high))
+  {
+    return 0;
+  }
+
+  return (source << (63 - high) >> (63 - (high - low)));
+
+
+  //return (source >> (high - 1));
+  //return ((source >> low) & ((1 << (high - low + 1)) - 1));
+
+  //return (source << (high - low)) >> (high) & 0xFF;
+  // mask bits
+
+  //return (source << (63 - high) >> (63 - low)) & 0xFF;
+ //return (source << (high - low)) >> (high * 8) & 0xFF;
+ //return (source << (low * 8)) && (source << (high * 8)) * 0xFF;
 }
 
 
@@ -139,7 +156,13 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
  */
 uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
 {
-  return 0;
+  if ((low < 0) || (high > 63) || (low > high))
+  {
+    return source; 
+  }
+  uint64_t bit = getBits(source, low, high);
+  return bit;
+
 }
 
 /**
