@@ -117,7 +117,7 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
     return 0;
   }
 
-  return (source << (63 - high) >> (63 - (high - low)));
+  return (source << (63 - high) >> ((63 - high) + low));
 
 
   //return (source >> (high - 1));
@@ -160,9 +160,19 @@ uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
   {
     return source; 
   }
-  uint64_t bit = getBits(source, low, high);
-  return bit;
+  //uint64_t bit = getBits(source, low, high); 
+  //return bit;
 
+  //return source | getBits(source, low, high) << high; //<< (high - low);
+
+  // uint64_t bit = getBits(source, low, high);
+  // bit <<= low;
+  // return source | bit;
+
+ uint64_t mask = 0xffffffffffffffff;
+ //uint64_t mask = getBits(source, low, high);
+ mask = mask << (63-high) >> ((63-high) + low) << low;
+ return source | mask;
 }
 
 /**
