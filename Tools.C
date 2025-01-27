@@ -364,5 +364,10 @@ bool Tools::subOverflow(uint64_t op1, uint64_t op2)
   //Note: you can not simply use addOverflow in this function.  If you negate
   //op1 in order to an add, you may get an overflow. 
   //NOTE: the subtraction is op2 - op1 (not op1 - op2).
-  return false;
+
+  bool sign1 = sign(op1) & 1;
+  bool sign2 = sign(op2) & 1;
+  bool signResult = sign(op2 - op1) & 1;
+  return (sign1 != sign2) && (sign1 == signResult);
+  //return false;
 }
