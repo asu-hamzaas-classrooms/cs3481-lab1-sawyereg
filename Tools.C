@@ -240,7 +240,23 @@ uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
 uint64_t Tools::copyBits(uint64_t source, uint64_t dest, 
                          int32_t srclow, int32_t dstlow, int32_t length)
 {
-   return 0; 
+  //uint64_t result = source;
+  if (((srclow < 0) || (srclow > 63) || (dstlow < 0) || (dstlow > 63) || 
+        (srclow + length - 1 > 63) || (dstlow + length - 1 > 63) || 
+        (length < 0)))
+  {
+    return dest; 
+  }
+  uint64_t tmp1 = getBits(source,srclow,(srclow + (length -1)));
+  dest = clearBits(dest,dstlow,(dstlow + (length -1)));
+
+  //uint64_t result = tmp1 << dstlow;
+  // dest = dest | result;
+  dest |= (tmp1 << dstlow);
+  return dest;
+  //result = tmp1 | tmp2;
+
+  //return result; 
 }
 
 
