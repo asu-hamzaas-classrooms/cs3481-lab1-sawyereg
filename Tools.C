@@ -241,9 +241,9 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
                          int32_t srclow, int32_t dstlow, int32_t length)
 {
   //uint64_t result = source;
-  if (((srclow < 0) || (srclow > 63) || (dstlow < 0) || (dstlow > 63) || 
+  if (((srclow < 0) || (srclow > 63) || (dstlow < 0) || (dstlow > 63)) || 
         (srclow + length - 1 > 63) || (dstlow + length - 1 > 63) || 
-        (length < 0)))
+        (length < 0))
   {
     return dest; 
   }
@@ -303,7 +303,9 @@ uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
  */
 uint64_t Tools::sign(uint64_t source)
 {
-  return 0;
+  uint64_t result = source >> 63;
+  return (result == 1) ? 1:0;
+  // check if result is 1, if it's not 1 assign it 0, if it is 1 assign it 1
 }
 
 /**
