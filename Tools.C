@@ -281,7 +281,13 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
  */
 uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
 {
-  return 0;
+  // shfits mask by position of byteNum
+    uint64_t mask = (0xFFULL << (byteNum * 8));
+    
+  // make sure byteNum is in range       --     if out of range the mask will be zeros making it unchanged if valid it'll be 1
+    uint64_t range = (byteNum >= 0 && byteNum <= 7);
+    mask = mask & -range;
+    return source | mask;
 }
 
 
@@ -379,5 +385,4 @@ bool Tools::subOverflow(uint64_t op1, uint64_t op2)
   bool sign2 = sign(op2) & 1;
   bool signResult = sign(op2 - op1) & 1;
   return (sign1 != sign2) && (sign1 == signResult);
-  //return false;
 }
